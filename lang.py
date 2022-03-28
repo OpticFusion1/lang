@@ -1,3 +1,9 @@
+#!#/usr/bin/env python3
+# Quick way to scrape merriam-webster's dictionary and thesaurus
+#
+# Author: Optic_Fusion1
+# Date: 3/05/2022
+
 import requests
 import argparse
 from bs4 import BeautifulSoup
