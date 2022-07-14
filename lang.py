@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from string import ascii_lowercase
 from pathlib import Path
 
-version = "0.2.0";
+version = "0.3.0";
 
 print(f"Running lang {version}")
 
@@ -39,23 +39,28 @@ def processUrl(base_url, file_name):
                 final_url = url + str(x);
                 r = requests.get(final_url, headers={'user-agent': 'Mozilla/5.0'})
                 soup = BeautifulSoup(r.content, 'html5lib')
-                for foo in soup.findAll('div'):
-                    if (foo['class'][0] == 'entries'):
-                        if (foo.find('ul')):
-                            text = foo.text.encode('utf-8')
-                            mod_text = text.decode('utf-8').replace('                                        ', '').replace('                    \n', '').replace('              \n', '').replace('    \n', '').replace('    ', '').strip()
-                            file.write(mod_text + "\n")
-                            print(mod_text)
+                for foo in soup.findAll('a'):
+                    try:
+                        clazz = foo['class']
+                        if clazz[0] == 'pb-4' and clazz[1] == 'pr-4' and clazz[2] == 'd-block':
+                            text = foo.text
+                            print(text)
+                            file.write(text + "\n")
+                    except:
+                        continue
         else:
-            r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
+            final_url = url + str(x);
+            r = requests.get(final_url, headers={'user-agent': 'Mozilla/5.0'})
             soup = BeautifulSoup(r.content, 'html5lib')
-            for foo in soup.findAll('div'):
-                if (foo['class'][0] == 'entries'):
-                    if (foo.find('ul')):
-                        text = foo.text.encode('utf-8')
-                        mod_text = text.decode('utf-8').replace('                                        ', '').replace('                    \n', '').replace('              \n', '').replace('    \n', '').replace('    ', '').strip()
-                        file.write(mod_text + "\n")
-                        print(mod_text)
+            for foo in soup.findAll('a'):
+                try:
+                    clazz = foo['class']
+                    if clazz[0] == 'pb-4' and clazz[1] == 'pr-4' and clazz[2] == 'd-block':
+                        text = foo.text
+                        print(text)
+                        file.write(text + "\n")
+                except:
+                    continue
         
     file.close();
 
